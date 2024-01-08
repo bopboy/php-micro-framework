@@ -1,24 +1,25 @@
 <?php
 
 require_once './vendor/autoload.php';
-// require_once './config.php';
+require_once './config.php';
 
-// use Onedb\Database\Adaptor;
+use Onedb\Routing\Route;
+use Onedb\Database\Adaptor;
 
-// Adaptor::setup('mysql:dbname='.$config['dbname'],$config['dbuser'],$config['password']);
+Adaptor::setup('mysql:dbname='.$config['dbname'],$config['dbuser'],$config['password']);
 
-// class Post {
+Route::add('get', '/', function() {
+    echo "hello, world";
+});
 
-// }
+Route::add('get', '/posts', function() {
+    var_dump(Adaptor::getAll(('SELECT * FROM lectures LIMIT 3')));
+});
 
-// $posts1 = Adaptor::getAll('SELECT * FROM lectures LIMIT 3');
-// $posts2 = Adaptor::getAll('SELECT * FROM lectures LIMIT 10', [], Post::class);
-// var_dump($posts2);
+Route::add('get', '/posts/{id}', function($id) {
+    $post = Adaptor::getAll('SELECT * FROM lectures WHERE id = ?', [$id]);
+    if($post) return var_dump($post);
+    http_response_code(404);
+});
 
-echo "test\n";
-use Onedb\Http\Request;
-
-$_SERVER['REQUEST_METHOD'] = 'GET';
-$_SERVER['PATH_INFO'] = '/posts/write';
-var_dump(Request::getMethod());
-var_dump(Request::getPath());
+Route::run();
