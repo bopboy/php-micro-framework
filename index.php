@@ -5,12 +5,19 @@ require_once './config.php';
 
 use Onedb\Routing\Route;
 use Onedb\Database\Adaptor;
+use Onedb\Routing\Middleware;
 
 Adaptor::setup('mysql:dbname='.$config['dbname'],$config['dbuser'],$config['password']);
 
+class HelloMiddleware extends Middleware {
+    public static function process() {
+        return true;
+    }
+}
+
 Route::add('get', '/', function() {
     echo "hello, world";
-});
+}, [HelloMiddleware::class]);
 
 Route::add('get', '/posts', function() {
     var_dump(Adaptor::getAll(('SELECT * FROM lectures LIMIT 3')));
