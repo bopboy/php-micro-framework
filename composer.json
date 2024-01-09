@@ -3,6 +3,7 @@
     "description": "onedb is a simple micro framework",
     "type": "library",
     "license": "MIT",
+    "version": "0.0.1",
     "authors": [
         {
             "name": "bopboy",
